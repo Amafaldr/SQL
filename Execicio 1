@@ -1,0 +1,35 @@
+CREATE DATABASE vendas;
+USE vendas;
+
+CREATE TABLE Produto (
+    Codigo_Produto INT AUTO_INCREMENT PRIMARY KEY,
+    Descricao_Produto VARCHAR(50),
+    Preco DECIMAL(10,2),
+    Peso FLOAT
+);
+
+CREATE TABLE Nota_fiscal (
+    Numero_NF INT AUTO_INCREMENT PRIMARY KEY,
+    ICMS FLOAT,
+    Valor_Total_NF DECIMAL(10,2)
+);
+
+CREATE TABLE Itens (
+    Num_item INT AUTO_INCREMENT PRIMARY KEY,
+    Codigo_Produto INT,
+    Numero_NF INT,
+    FOREIGN KEY (Codigo_Produto) REFERENCES Produto(Codigo_Produto),
+    FOREIGN KEY (Numero_NF) REFERENCES Nota_fiscal(Numero_NF)
+);
+
+ALTER TABLE Produto MODIFY COLUMN Descricao_Produto VARCHAR(50);
+ALTER TABLE Nota_fiscal ADD COLUMN ICMS FLOAT AFTER Numero_NF;
+ALTER TABLE Produto ADD COLUMN Peso FLOAT;
+ALTER TABLE Itens DROP PRIMARY KEY;
+ALTER TABLE Itens ADD PRIMARY KEY (Num_item);
+DESC Produto;
+DESC Nota_fiscal;
+ALTER TABLE Nota_fiscal CHANGE COLUMN Valor_Total_NF Valor_NF DECIMAL(10,2);
+ALTER TABLE Nota_fiscal DROP COLUMN Data_NF;
+DROP TABLE Itens;
+ALTER TABLE Nota_fiscal RENAME TO Venda;
