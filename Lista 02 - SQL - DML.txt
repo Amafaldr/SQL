@@ -1,0 +1,243 @@
+CREATE DATABASE VENDAS;
+USE VENDAS;
+CREATE TABLE Enderecos (
+    ID INT PRIMARY KEY,
+    CEP VARCHAR(10),
+    RUA VARCHAR(255),
+    CIDADE VARCHAR(100),
+    UF VARCHAR(2),
+    Numero INT
+);
+
+INSERT INTO Enderecos (ID, CEP, RUA, CIDADE, UF, Numero)
+VALUES
+    (1, '12345-678', 'Rua das Flores', 'Cidade A', 'UF1', 123),
+    (2, '54321-876', 'Avenida Central', 'Cidade B', 'UF2', 456),
+    (3, '98765-432', 'Praça Principal', 'Cidade C', 'UF3', 789),
+    (4, '56789-012', 'Alameda dos Parques', 'Cidade D', 'UF4', 101),
+    (5, '34567-890', 'Travessa da Colina', 'Cidade E', 'UF5', 202);
+
+CREATE TABLE Clientes (
+    ID INT PRIMARY KEY,
+    Nome VARCHAR(255),
+    Email VARCHAR(255),
+    Telefone VARCHAR(20),
+    EnderecoID INT,
+    FOREIGN KEY (EnderecoID) REFERENCES Enderecos(ID)
+);
+INSERT INTO Clientes (ID, Nome, Email, Telefone, EnderecoID)
+VALUES
+    (1, 'João Silva', 'joao@example.com', '(11) 1234-5678', 1),
+    (2, 'Maria Santos', 'maria@example.com', '(22) 9876-5432', 2),
+    (3, 'Carlos Oliveira', 'carlos@example.com', '(33) 4567-8901', 3),
+    (4, 'Ana Pereira', 'ana@example.com', '(44) 2345-6789', 4),
+    (5, 'Pedro Almeida', 'pedro@example.com', '(55) 8765-4321', 5),
+    (6, 'Luiza Costa', 'luiza@example.com', '(66) 3456-7890', 1),
+    (7, 'Rafael Barbosa', 'rafael@example.com', '(77) 6543-2109', 2),
+    (8, 'Isabela Ferreira', 'isabela@example.com', '(88) 4321-0987', 3),
+    (9, 'Paulo Souza', 'paulo@example.com', '(99) 7654-3210', 4),
+    (10, 'Fernanda Lima', 'fernanda@example.com', '(00) 2109-8765', 5);
+CREATE TABLE Pedidos (
+    ID INT PRIMARY KEY,
+    ClienteID INT,
+    DataPedido DATE,
+    ValorTotal DECIMAL(10, 2),
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ID)
+);
+
+INSERT INTO Pedidos (ID, ClienteID, DataPedido, ValorTotal)
+VALUES
+    (1, 3, '2023-08-10', 150.00),
+    (2, 1, '2023-08-11', 75.50),
+    (3, 5, '2023-08-12', 200.25),
+    (4, 2, '2023-08-13', 50.00),
+    (5, 4, '2023-08-14', 300.75);
+
+CREATE TABLE Fornecedores (
+    ID INT PRIMARY KEY,
+    Nome VARCHAR(255),
+    Email VARCHAR(255),
+    Telefone VARCHAR(20),
+    EnderecoID INT,
+    FOREIGN KEY (EnderecoID) REFERENCES Enderecos(ID)
+);
+
+INSERT INTO Fornecedores (ID, Nome, Email, Telefone, EnderecoID)
+VALUES
+    (1, 'Fornecedor A', 'fornecedorA@example.com', '(11) 1234-5678', 1),
+    (2, 'Fornecedor B', 'fornecedorB@example.com', '(22) 9876-5432', 2),
+    (3, 'Fornecedor C', 'fornecedorC@example.com', '(33) 4567-8901', 3),
+    (4, 'Fornecedor D', 'fornecedorD@example.com', '(44) 2345-6789', 4),
+    (5, 'Fornecedor E', 'fornecedorE@example.com', '(55) 8765-4321', 5),
+    (6, 'Fornecedor F', 'fornecedorF@example.com', '(66) 3456-7890', 1),
+    (7, 'Fornecedor G', 'fornecedorG@example.com', '(77) 6543-2109', 2),
+    (8, 'Fornecedor H', 'fornecedorH@example.com', '(88) 4321-0987', 3),
+    (9, 'Fornecedor I', 'fornecedorI@example.com', '(99) 7654-3210', 4),
+    (10, 'Fornecedor J', 'fornecedorJ@example.com', '(00) 2109-8765', 5);
+
+CREATE TABLE Produtos (
+    ID INT PRIMARY KEY,
+    Nome VARCHAR(255),
+    Preco DECIMAL(10, 2),
+    Estoque int,
+    FornecedorID INT,
+    FOREIGN KEY (FornecedorID) REFERENCES Fornecedores(ID)
+);
+
+INSERT INTO Produtos (ID, Nome, Preco, Estoque, FornecedorID)
+VALUES
+    (1, 'Produto A', 25.99,0, 1),
+    (2, 'Produto B', 12.50,0, 2),
+    (3, 'Produto C', 45.75,0, 3),
+    (4, 'Produto D', 8.99,0, 4),
+    (5, 'Produto E', 30.25,0, 5);
+CREATE TABLE Itens_Pedidos (
+    ID INT PRIMARY KEY,
+    PedidoID INT,
+    ProdutoID INT,
+    Quantidade INT,
+    PrecoUnitario DECIMAL(10, 2),
+    FOREIGN KEY (PedidoID) REFERENCES Pedidos(ID),
+    FOREIGN KEY (ProdutoID) REFERENCES Produtos(ID)
+);
+
+INSERT INTO Itens_Pedidos (ID, PedidoID, ProdutoID, Quantidade, PrecoUnitario)
+VALUES
+    (1, 1, 3, 2, 25.99),
+    (2, 1, 5, 3, 12.50),
+    (3, 2, 2, 1, 45.75),
+    (4, 2, 4, 4, 8.99),
+    (5, 3, 1, 2, 30.25),
+    (6, 3, 3, 1, 25.99),
+    (7, 4, 5, 5, 12.50),
+    (8, 4, 1, 3, 30.25),
+    (9, 5, 4, 2, 8.99),
+    (10, 5, 2, 1, 45.75);
+
+CREATE TABLE Compras (
+    ID INT PRIMARY KEY,
+    FornecedorID INT,
+    DataCompra DATE,
+    ValorTotal DECIMAL(10, 2),
+    FOREIGN KEY (FornecedorID) REFERENCES Fornecedores(ID)
+);
+
+INSERT INTO Compras (ID, FornecedorID, DataCompra, ValorTotal)
+VALUES
+    (1, 3, '2023-08-10', 1500.00),
+    (2, 1, '2023-08-11', 750.50),
+    (3, 5, '2023-08-12', 2000.25),
+    (4, 2, '2023-08-13', 500.00),
+    (5, 4, '2023-08-14', 3000.75);
+    
+CREATE TABLE Itens_Compras (
+    ID INT PRIMARY KEY,
+    CompraID INT,
+    ProdutoID INT,
+    Quantidade INT,
+    PrecoUnitario DECIMAL(10, 2),
+    FOREIGN KEY (CompraID) REFERENCES Compras(ID),
+    FOREIGN KEY (ProdutoID) REFERENCES Produtos(ID)
+);
+INSERT INTO Itens_Compras (ID, CompraID, ProdutoID, Quantidade, PrecoUnitario)
+VALUES
+    (1, 1, 1, 5, 100.00),
+    (2, 2, 2, 3, 45.00),
+    (3, 3, 3, 2, 30.00),
+    (4, 4, 4, 4, 20.00),
+    (5, 5, 5, 1, 15.00);
+
+
+-- PARTE 2 - EXERCICIO
+
+ALTER TABLE ENDERECOS ADD COLUMN BAIRRO VARCHAR (100); -- 1 
+
+CREATE TABLE CATEGORIAS ( -- 2
+
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NOME VARCHAR(100) NOT NULL,
+    DESCRICAO VARCHAR(100)
+);
+
+ALTER TABLE PRODUTOS 
+ADD COLUMN categoria_id INT,
+ADD CONSTRAINT fk_categoria
+FOREIGN KEY (categoria_id) REFERENCES Categorias(id); -- 3
+
+ALTER TABLE CLIENTES MODIFY COLUMN EMAIL VARCHAR (150); -- 4
+
+ALTER TABLE PEDIDOS ADD COLUMN DATA_ENTREGA varchar (10) ; -- 5
+
+ALTER TABLE FORNECEDORES CHANGE COLUMN TELEFONE TELEFONE_CONTATO VARCHAR (50);  -- 6
+
+ALTER TABLE PEDIDOS 
+ADD COLUMN PEDIDOS_id INT,
+ADD CONSTRAINT fk_PEDIDOS
+FOREIGN KEY (PEDIDOS_id) REFERENCES PEDIDOS(id); -- 7
+
+ALTER TABLE PRODUTOS CHANGE COLUMN ESTOQUE estoque_atual INT CHECK (estoque_atual >= 0);
+ -- 8
+
+ALTER TABLE PRODUTOS ADD CONSTRAINT UK_NOME UNIQUE (NOME); -- 9
+
+ALTER TABLE CLIENTES ADD COLUMN DATA_NASCIMENTO DATE ; -- 10
+
+ALTER TABLE CLIENTES MODIFY COLUMN DATA_CADASTRO DATE ; --11
+
+CREATE TABLE PAGAMENTO ( -- 12
+
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    TIPO VARCHAR(100),
+    DATA DATE(8)
+);
+
+ALTER TABLE PEDIDOS ADD COLUMN OBSCEVACOES VARCHAR (100) ; -- 13
+
+ALTER TABLE FORNECEDORES ADD COLUMN NOME_FANTASIA VARCHAR (100) ; -- 14
+
+CREATE TABLE VENDEDORES ( -- 15
+
+    ID INT PRIMARY KEY AUTO INCREMENT,
+    NOME VARCHAR(100),
+    EMAIL VARCHAR(50),
+    TELEFONE INT(11)
+);
+
+ALTER TABLE PRODUTO ADD COLUMN IMAGEM_URL VARCHAR (2083) ; -- 16
+
+ALTER TABLE COMPRAS ADD FOREIGN KEY (FORNECEDORID) REFERENCES FORNECEDORES(ID) ; -- 17
+
+ALTER TABLE FORNECEDORES ADD COLUMN DATA_ULTIMA_COMPRA DATE (8) ; -- 18
+
+ALTER TABLE PEDIDOS ALTER COLUMN VALORTOTAL DECIMAL (10,2) NULL; --19
+
+ALTER TABLE ITENS_PEDIDOS ALTER COLUMN QUANTIDADE INT NOT NULL; --20
+
+-- 3 PARTE - EXERCICIO
+
+-- Inserir dados na tabela Categorias
+INSERT INTO Categorias (ID, Nome, Descricao) VALUES
+(1, 'Eletrônicos', 'Produtos eletrônicos em geral'),
+(2, 'Roupas', 'Vestuário masculino, feminino e infantil');
+
+-- Inserir dados na tabela Vendedores
+INSERT INTO Vendedores (ID, Nome, Email, Telefone) VALUES
+(1, 'João Silva', 'joao@example.com', '123456789'),
+(2, 'Maria Santos', 'maria@example.com', '987654321');
+
+-- Inserir dados na tabela Pagamentos
+INSERT INTO Pagamentos (ID, Tipo, Data) VALUES
+(1, 'Cartão de Crédito', '2024-03-07'),
+(2, 'Boleto', '2024-03-08');
+
+-- Exemplos de atualização de dados para algumas tabelas:
+-- Atualizar dados na tabela Clientes
+UPDATE Clientes
+SET DataNascimento = '1990-01-01', DataCadastro = '2024-03-07'
+WHERE ID = 1;
+
+-- Atualizar dados na tabela Fornecedores
+UPDATE Fornecedores
+SET DataUltimaCompra = '2024-03-06'
+WHERE ID = 1;
+
