@@ -1,0 +1,23 @@
+-- Exemplo de INNER JOIN:
+SELECT alunos.nome AS NomeAluno, materias.nome AS NomeMateria
+FROM alunos
+INNER JOIN alunosxmateria ON alunos.RA = alunosxmateria.ra
+INNER JOIN materias ON alunosxmateria.id_materia = materias.id_materia;
+
+-- Exemplo de JOIN (que é equivalente a INNER JOIN no MySQL):
+SELECT alunos.nome AS NomeAluno, materias.nome AS NomeMateria
+FROM alunos
+JOIN alunosxmateria ON alunos.RA = alunosxmateria.ra
+JOIN materias ON alunosxmateria.id_materia = materias.id_materia;
+
+-- Exemplo de LEFT JOIN:
+SELECT alunos.nome AS NomeAluno, materias.nome AS NomeMateria
+FROM alunos
+LEFT JOIN alunosxmateria ON alunos.RA = alunosxmateria.ra
+LEFT JOIN materias ON alunosxmateria.id_materia = materias.id_materia;
+
+-- Exemplo de RIGHT JOIN:
+SELECT alunos.nome AS NomeAluno, materias.nome AS NomeMateria
+FROM alunos
+RIGHT JOIN alunosxmateria ON alunos.RA = alunosxmateria.ra
+RIGHT JOIN materias ON alunosxmateria.id_materia = materias.id_materia;
